@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Route } from 'react-router-dom';
 import { Layout } from './components/Layout';
-import { Search } from './components/Search';
+import { SearchIP } from './components/SearchIP';
 
 export const routes = <Layout>
-    <Route exact path='/' component={ Search } />
-    <Route path='/ip' component={ Search } />
-    <Route path='/city' component={ Search } />
+    <Route exact path='/' component={SearchIP} />
+    <Route path='/ip' component={SearchIP} />
+
 </Layout>;

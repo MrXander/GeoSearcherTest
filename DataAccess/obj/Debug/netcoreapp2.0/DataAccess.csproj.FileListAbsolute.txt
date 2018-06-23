@@ -1,4 +1,0 @@
-C:\Users\Nikita\source\repos\GeoSearcher\DataAccess\obj\Debug\netcoreapp2.0\DataAccess.csprojAssemblyReference.cache
-C:\Users\Nikita\source\repos\GeoSearcher\DataAccess\obj\Debug\netcoreapp2.0\DataAccess.csproj.CoreCompileInputs.cache
-C:\Users\Nikita\source\repos\GeoSearcher\DataAccess\obj\Debug\netcoreapp2.0\DataAccess.AssemblyInfoInputs.cache
-C:\Users\Nikita\source\repos\GeoSearcher\DataAccess\obj\Debug\netcoreapp2.0\DataAccess.AssemblyInfo.cs

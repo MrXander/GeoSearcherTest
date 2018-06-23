@@ -10,7 +10,6 @@ export class NavMenu extends React.Component<{}, {}> {
                         <span className='sr-only'>Toggle navigation</span>
                         <span className='icon-bar'></span>
                         <span className='icon-bar'></span>
-                        <span className='icon-bar'></span>
                     </button>
                     <Link className='navbar-brand' to={'/'}>GeoSearcher</Link>
                 </div>

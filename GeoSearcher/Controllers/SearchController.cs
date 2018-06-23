@@ -1,61 +1,69 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using GeoSearcher.Models;
+using System.Net;
+using BusinessLogic;
+using BusinessLogic.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeoSearcher.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/")]
     public class SearchController : Controller
     {
-        [HttpGet("[action]")]
-        public IEnumerable<Location> IP(string ip)
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Location
-            ());
-        }
-
-        [HttpGet("[action]")]
-        public IEnumerable<Location> City(string city)
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new Location
-                ());
-        }
-
-        private static string[] Summaries = new[]
+        private static readonly string[] Summaries =
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        [HttpGet("[action]")]
-        public IEnumerable<WeatherForecast> WeatherForecasts()
+        private readonly IGeoSearcher _geoSearcher;
+
+        public SearchController(IGeoSearcher geoSearcher)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                DateFormatted = DateTime.Now.AddDays(index).ToString("d"),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            });
+            _geoSearcher = geoSearcher;
         }
 
-        public class WeatherForecast
+        [HttpGet("/ip/location")]
+        // ReSharper disable once InconsistentNaming
+        public IEnumerable<Location> IP(string ip)
         {
-            public string DateFormatted { get; set; }
-            public int TemperatureC { get; set; }
-            public string Summary { get; set; }
-
-            public int TemperatureF
+            if (!TryParseIP(ip,
+                            out ulong parsedIp))
             {
-                get
-                {
-                    return 32 + (int)(TemperatureC / 0.5556);
-                }
+                HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return null;
             }
+
+            var location = _geoSearcher.GetLocationByIP(parsedIp);
+            return location == null
+                       ? new Location[0]
+                       : new [] { location };
+        }
+
+        [HttpGet("/ip/locations")]
+        public IEnumerable<Models.Location> City(string city)
+        {
+            var rng = new Random();
+            return Enumerable.Range(1,
+                                    5)
+                             .Select(index => new Models.Location
+                                         ());
+        }
+
+        private bool TryParseIP(string ip,
+                                out ulong parsedIp)
+        {
+            parsedIp = 0;
+            if (!IPAddress.TryParse(ip,
+                                    out IPAddress ipAddress))
+            {
+                return false;
+            }
+
+            parsedIp = BitConverter.ToUInt32(ipAddress.GetAddressBytes(),
+                                             0);
+
+            return true;
         }
     }
 }

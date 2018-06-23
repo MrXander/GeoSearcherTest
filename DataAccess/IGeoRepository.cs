@@ -9,7 +9,8 @@ namespace DataAccess
 {
     public interface IGeoRepository
     {
-        IReadOnlyCollection<Location> GetLocationsByIP(string ip);
+        // ReSharper disable once InconsistentNaming
+        Location GetLocationsByIP(ulong ip);
         IReadOnlyCollection<Location> GetLocationsByCity(string city);
     }
 }

@@ -1,7 +1,6 @@
 ﻿#region
 
 using System.Collections.Generic;
-using System.Linq;
 using BusinessLogic.Extensions;
 using BusinessLogic.Models;
 using DataAccess;
@@ -22,20 +21,13 @@ namespace BusinessLogic
         public Location GetLocationByIP(ulong ip)
         {
             DataAccess.Models.Location location = _repository.GetLocationsByIP(ip);
-
             return location?.ToBusiness();
         }
 
         public IReadOnlyCollection<Location> GetLocationsByCity(string city)
         {
-            IReadOnlyCollection<DataAccess.Models.Location> locations = _repository.GetLocationsByCity(city);
-
-            if (!locations.Any())
-            {
-                return null;
-            }
-
-            return locations.ToBusiness();
+            var locations = _repository.GetLocationsByCity(city);
+            return locations?.ToBusiness();
         }
     }
 }

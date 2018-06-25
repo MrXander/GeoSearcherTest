@@ -11,17 +11,17 @@ namespace DataAccess.Models
         public GeoDb(Header header,
                      IReadOnlyCollection<IPRange> ranges,
                      IReadOnlyCollection<Location> locations,
-                     uint[] indexes)
+                     IReadOnlyCollection<uint> sortedLocationIndexes)
         {
             Header = header;
             Ranges = ranges;
             Locations = locations;
-            Indexes = indexes;
+            SortedLocationIndexes = sortedLocationIndexes;
         }
 
         public Header Header { get; }
         public IReadOnlyCollection<IPRange> Ranges { get; }
         public IReadOnlyCollection<Location> Locations { get; }
-        public uint[] Indexes { get; }
+        public IReadOnlyCollection<uint> SortedLocationIndexes { get; }
     }
 }

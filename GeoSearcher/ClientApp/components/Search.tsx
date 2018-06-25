@@ -34,7 +34,7 @@ export class Search extends React.Component<SearchProps, SearchState> {
             : this.renderLocation(this.state.locations, this.state.searchString);
 
         return <div>
-            <p>Enter valid ip address</p>
+            <p>Enter valid search string</p>
             {contents}
         </div>;
     }
@@ -50,10 +50,12 @@ export class Search extends React.Component<SearchProps, SearchState> {
     private handleInput(event: React.FormEvent<HTMLInputElement>) {
         var inputStr = event.currentTarget.value;
         this.setState({ searchString: inputStr });
-        if (this.validateInput(inputStr))
+        if (this.validateInput(inputStr)) {
             this.fetchData(inputStr);
-        else
+            this.setState({ searchStringValidation: '' });
+        } else {
             this.setState({ searchStringValidation: 'Invalid input string' });
+        }
     }
 
     private validateInput(str: string) {
@@ -75,9 +77,12 @@ export class Search extends React.Component<SearchProps, SearchState> {
         return <div>
             <div>
                 <label>
-                    IP: 
+                    Search:
                     <input type="text" value={str} onChange={this.handleInput} />
                 </label>
+            </div>
+            <div>
+                Validation error: {this.state.searchStringValidation}
             </div>
             <table className='table'>
                 <thead>

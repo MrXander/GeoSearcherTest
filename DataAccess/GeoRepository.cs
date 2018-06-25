@@ -50,6 +50,41 @@ namespace DataAccess
             return null;
         }
 
-        public IReadOnlyCollection<Location> GetLocationsByCity(string city) => throw new NotImplementedException();
+        public IReadOnlyCollection<Location> GetLocationsByCity(string city)
+        {
+            if (!_db.Locations.Any() || string.IsNullOrEmpty(city))
+            {
+                return null;
+            }
+
+            var first = 0;
+            int last = _db.SortedLocationIndexes.Count;
+
+            var foundLocations = new List<Location>();
+            while (first <= last)
+            {
+                int mid = first + (last - first) / 2;
+                var midIdx = _db.SortedLocationIndexes.ElementAt(mid);
+                var midLoc = _db.Locations.ElementAt((int)midIdx);
+
+                if (string.Equals(city, midLoc.City, StringComparison.OrdinalIgnoreCase))
+                {
+                    foundLocations.Add(midLoc);
+                    continue;
+                }
+
+                var comparisonResult = string.Compare(city, midLoc.City, StringComparison.OrdinalIgnoreCase);
+                if (comparisonResult < 0)
+                {
+                    last = mid - 1;
+                }
+                else
+                {
+                    first = mid + 1;
+                }
+            }
+
+            return foundLocations;
+        }
     }
 }

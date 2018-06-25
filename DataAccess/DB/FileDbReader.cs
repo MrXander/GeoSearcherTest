@@ -2,8 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
-using DataAccess.Exceptions;
+using System.Linq;
 using DataAccess.Models;
 
 #endregion
@@ -71,12 +72,32 @@ namespace DataAccess.DB
             return locations;
         }
 
-        public uint[] ReadIndexes(int records)
+        public uint[] ReadSortedLocationIndexes(uint locationsOffset, int records)
         {
-            var indexes = new uint[records];
+            const int locationSizeBytes = 96;
+
+            var idx = new uint[records];
+            for (int i = 0; i < records; i++)
+            {
+                idx[i] = _binaryReader.ReadUInt32();
+            }
+
+            idx = idx.OrderBy(x => x)
+                     .ToArray();
+;            var indexes = new uint[records];
             for (var i = 0; i < records; i++)
             {
-                indexes[i] = _binaryReader.ReadUInt32();
+                //var offsetFromLocations = _binaryReader.ReadUInt32();
+                var offsetFromLocations = idx[i];
+                var index = (locationsOffset > offsetFromLocations
+                                 ? offsetFromLocations
+                                 : offsetFromLocations - locationsOffset) / locationSizeBytes;
+                var a = locationsOffset > offsetFromLocations
+                            ? offsetFromLocations
+                            : offsetFromLocations - locationsOffset;
+                if (a % locationSizeBytes > 0)
+                    throw new Exception("ooops");
+                indexes[i] = index;
             }
 
             return indexes;

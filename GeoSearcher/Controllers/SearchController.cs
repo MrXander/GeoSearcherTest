@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using BusinessLogic;
 using BusinessLogic.Models;
@@ -11,11 +10,6 @@ namespace GeoSearcher.Controllers
     [Route("/")]
     public class SearchController : Controller
     {
-        private static readonly string[] Summaries =
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly IGeoSearcher _geoSearcher;
 
         public SearchController(IGeoSearcher geoSearcher)
@@ -37,17 +31,16 @@ namespace GeoSearcher.Controllers
             var location = _geoSearcher.GetLocationByIP(parsedIp);
             return location == null
                        ? new Location[0]
-                       : new [] { location };
+                       : new[] { location };
         }
 
-        [HttpGet("/ip/locations")]
-        public IEnumerable<Models.Location> City(string city)
+        [HttpGet("/city/locations")]
+        public IReadOnlyCollection<Location> City(string city)
         {
-            var rng = new Random();
-            return Enumerable.Range(1,
-                                    5)
-                             .Select(index => new Models.Location
-                                         ());
+            if (string.IsNullOrEmpty(city))
+                return new Location[0];
+
+            return _geoSearcher.GetLocationsByCity(city);
         }
 
         private bool TryParseIP(string ip,

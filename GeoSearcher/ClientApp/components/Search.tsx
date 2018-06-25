@@ -65,9 +65,7 @@ export class Search extends React.Component<SearchProps, SearchState> {
                 console.log(str.search(/\b(?:\d{1,3}\.){3}\d{1,3}\b/));
                 return str.search(/\b(?:\d{1,3}\.){3}\d{1,3}\b/) !== -1;
             case SearchType.City:
-                if (str.indexOf(" ") === -1)
                     return true;
-                return false;
             default:
                 return false;
         }

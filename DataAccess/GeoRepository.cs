@@ -67,13 +67,21 @@ namespace DataAccess
                 var midIdx = _db.SortedLocationIndexes.ElementAt(mid);
                 var midLoc = _db.Locations.ElementAt((int)midIdx);
 
-                if (string.Equals(city, midLoc.City, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(city, midLoc.City, StringComparison.Ordinal))
                 {
                     foundLocations.Add(midLoc);
-                    continue;
+                    midLoc = _db.Locations.ElementAt((int)++midIdx);
+                    while (string.Equals(city,
+                                         midLoc.City,
+                                         StringComparison.Ordinal))
+                    {
+                        foundLocations.Add(midLoc);
+                        midLoc = _db.Locations.ElementAt((int)++midIdx);
+                    }
+                    break;
                 }
 
-                var comparisonResult = string.Compare(city, midLoc.City, StringComparison.OrdinalIgnoreCase);
+                var comparisonResult = string.Compare(city, midLoc.City, StringComparison.Ordinal);
                 if (comparisonResult < 0)
                 {
                     last = mid - 1;

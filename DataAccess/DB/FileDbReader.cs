@@ -76,28 +76,30 @@ namespace DataAccess.DB
         {
             const int locationSizeBytes = 96;
 
-            var idx = new uint[records];
-            for (int i = 0; i < records; i++)
-            {
-                idx[i] = _binaryReader.ReadUInt32();
-            }
+            //var idx = new uint[records];
+            //for (int i = 0; i < records; i++)
+            //{
+            //    idx[i] = _binaryReader.ReadUInt32();
+            //    if (idx[i] % locationSizeBytes > 0)
+            //        throw new Exception("ooops");
+            //}
 
-            idx = idx.OrderBy(x => x)
-                     .ToArray();
+            //idx = idx.OrderBy(x => x)
+            //         .ToArray();
 ;            var indexes = new uint[records];
             for (var i = 0; i < records; i++)
             {
-                //var offsetFromLocations = _binaryReader.ReadUInt32();
-                var offsetFromLocations = idx[i];
-                var index = (locationsOffset > offsetFromLocations
-                                 ? offsetFromLocations
-                                 : offsetFromLocations - locationsOffset) / locationSizeBytes;
-                var a = locationsOffset > offsetFromLocations
-                            ? offsetFromLocations
-                            : offsetFromLocations - locationsOffset;
-                if (a % locationSizeBytes > 0)
-                    throw new Exception("ooops");
-                indexes[i] = index;
+                var offsetFromLocations = _binaryReader.ReadUInt32();
+                //var offsetFromLocations = idx[i];
+                //var index = (locationsOffset > offsetFromLocations
+                //                 ? offsetFromLocations
+                //                 : offsetFromLocations - locationsOffset) / locationSizeBytes;
+                //var a = locationsOffset > offsetFromLocations
+                //            ? offsetFromLocations
+                //            : offsetFromLocations - locationsOffset;
+                //if (a % locationSizeBytes > 0)
+                //    throw new Exception("ooops");
+                indexes[i] = offsetFromLocations / locationSizeBytes;
             }
 
             return indexes;

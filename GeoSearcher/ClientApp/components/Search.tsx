@@ -41,9 +41,9 @@ export class Search extends React.Component<SearchProps, SearchState> {
 
     private fetchData(str: string) {
         fetch(this.state.searchUrl + str)
-            .then(response => response.json() as Promise<Location[]>)
+            .then(response => response.json() as Promise<Location>)
             .then(data => {
-                this.setState({ locations: data, loading: false });
+                this.setState({ locations: [data], loading: false });
             });
     }
 

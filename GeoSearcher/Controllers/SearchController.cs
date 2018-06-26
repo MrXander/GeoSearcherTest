@@ -19,7 +19,7 @@ namespace GeoSearcher.Controllers
 
         [HttpGet("/ip/location")]
         // ReSharper disable once InconsistentNaming
-        public IEnumerable<Location> IP(string ip)
+        public Location IP(string ip)
         {
             if (!TryParseIP(ip,
                             out ulong parsedIp))
@@ -28,17 +28,14 @@ namespace GeoSearcher.Controllers
                 return null;
             }
 
-            var location = _geoSearcher.GetLocationByIP(parsedIp);
-            return location == null
-                       ? new Location[0]
-                       : new[] { location };
+            return _geoSearcher.GetLocationByIP(parsedIp);
         }
 
         [HttpGet("/city/locations")]
-        public IReadOnlyCollection<Location> City(string city)
+        public Location City(string city)
         {
             if (string.IsNullOrEmpty(city))
-                return new Location[0];
+                return null;
 
             return _geoSearcher.GetLocationsByCity(city);
         }

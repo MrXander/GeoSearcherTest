@@ -11,6 +11,6 @@ namespace DataAccess
     {
         // ReSharper disable once InconsistentNaming
         Location GetLocationsByIP(ulong ip);
-        IReadOnlyCollection<Location> GetLocationsByCity(string city);
+        Location GetLocationsByCity(string city);
     }
 }

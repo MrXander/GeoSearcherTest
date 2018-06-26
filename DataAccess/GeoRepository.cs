@@ -34,7 +34,7 @@ namespace DataAccess
                 if (ip >= midRange.IpFrom && ip <= midRange.IpTo)
                 {
                     //TODO bad cast ?
-                    return _db.Locations.ElementAt((int) midRange.Index);
+                    return _db.Locations.ElementAt((int)midRange.Index);
                 }
 
                 if (ip < midRange.IpFrom)
@@ -50,7 +50,7 @@ namespace DataAccess
             return null;
         }
 
-        public IReadOnlyCollection<Location> GetLocationsByCity(string city)
+        public Location GetLocationsByCity(string city)
         {
             if (!_db.Locations.Any() || string.IsNullOrEmpty(city))
             {
@@ -60,7 +60,6 @@ namespace DataAccess
             var first = 0;
             int last = _db.SortedLocationIndexes.Count;
 
-            var foundLocations = new List<Location>();
             while (first <= last)
             {
                 int mid = first + (last - first) / 2;
@@ -69,16 +68,7 @@ namespace DataAccess
 
                 if (string.Equals(city, midLoc.City, StringComparison.Ordinal))
                 {
-                    foundLocations.Add(midLoc);
-                    midLoc = _db.Locations.ElementAt((int)++midIdx);
-                    while (string.Equals(city,
-                                         midLoc.City,
-                                         StringComparison.Ordinal))
-                    {
-                        foundLocations.Add(midLoc);
-                        midLoc = _db.Locations.ElementAt((int)++midIdx);
-                    }
-                    break;
+                    return midLoc;
                 }
 
                 var comparisonResult = string.Compare(city, midLoc.City, StringComparison.Ordinal);
@@ -92,7 +82,7 @@ namespace DataAccess
                 }
             }
 
-            return foundLocations;
+            return null;
         }
     }
 }

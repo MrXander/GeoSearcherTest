@@ -24,10 +24,10 @@ namespace BusinessLogic
             return location?.ToBusiness();
         }
 
-        public IReadOnlyCollection<Location> GetLocationsByCity(string city)
+        public Location GetLocationsByCity(string city)
         {
-            var locations = _repository.GetLocationsByCity(city);
-            return locations?.ToBusiness();
+            var location = _repository.GetLocationsByCity(city);
+            return location?.ToBusiness();
         }
     }
 }

@@ -7,6 +7,6 @@ namespace BusinessLogic
     {
         // ReSharper disable once InconsistentNaming
         Location GetLocationByIP(ulong ip);
-        IReadOnlyCollection<Location> GetLocationsByCity(string city);
+        Location GetLocationsByCity(string city);
     }
 }

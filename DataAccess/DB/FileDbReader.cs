@@ -2,9 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using DataAccess.Models;
 
 #endregion
@@ -28,8 +26,7 @@ namespace DataAccess.DB
 
         public Header ReadHeader()
         {
-            _binaryReader.BaseStream.Seek(0,
-                                          SeekOrigin.Begin);
+            _binaryReader.BaseStream.Seek(0, SeekOrigin.Begin);
             return new Header(
                               version: _binaryReader.ReadInt32(),
                               name: new string(_binaryReader.ReadChars(32)).TrimEnd('\0'),
@@ -45,8 +42,7 @@ namespace DataAccess.DB
             var ranges = new IPRange[records];
             for (var i = 0; i < records; i++)
             {
-                ranges[i] = new IPRange(
-                                        _binaryReader.ReadUInt32(),
+                ranges[i] = new IPRange(_binaryReader.ReadUInt32(),
                                         _binaryReader.ReadUInt32(),
                                         _binaryReader.ReadUInt32());
             }
@@ -59,8 +55,7 @@ namespace DataAccess.DB
             var locations = new Location[records];
             for (var i = 0; i < records; i++)
             {
-                locations[i] = new Location(
-                                            country: new string(_binaryReader.ReadChars(8)).TrimEnd('\0'),
+                locations[i] = new Location(country: new string(_binaryReader.ReadChars(8)).TrimEnd('\0'),
                                             region: new string(_binaryReader.ReadChars(12)).TrimEnd('\0'),
                                             postal: new string(_binaryReader.ReadChars(12)).TrimEnd('\0'),
                                             city: new string(_binaryReader.ReadChars(24)).TrimEnd('\0'),
@@ -89,10 +84,7 @@ namespace DataAccess.DB
         {
             if (disposing)
             {
-                if (_binaryReader != null)
-                {
-                    _binaryReader.Dispose();
-                }
+                _binaryReader?.Dispose();
             }
         }
     }

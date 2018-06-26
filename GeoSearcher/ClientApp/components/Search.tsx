@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
 import 'isomorphic-fetch';
 
 export interface SearchProps extends React.Props<any> {
@@ -51,8 +50,8 @@ export class Search extends React.Component<SearchProps, SearchState> {
         var inputStr = event.currentTarget.value;
         this.setState({ searchString: inputStr });
         if (this.validateInput(inputStr)) {
-            this.fetchData(inputStr);
             this.setState({ searchStringValidation: '' });
+           this.fetchData(inputStr);
         } else {
             this.setState({ searchStringValidation: 'Invalid input string' });
         }

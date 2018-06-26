@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using DataAccess.DB;
 using DataAccess.Models;
@@ -33,7 +32,7 @@ namespace DataAccess
 
                 if (ip >= midRange.IpFrom && ip <= midRange.IpTo)
                 {
-                    //TODO bad cast ?
+                    //this cast is ok in current requirements
                     return _db.Locations.ElementAt((int)midRange.Index);
                 }
 
@@ -64,6 +63,7 @@ namespace DataAccess
             {
                 int mid = first + (last - first) / 2;
                 var midIdx = _db.SortedLocationIndexes.ElementAt(mid);
+                //this cast is ok in current requirements
                 var midLoc = _db.Locations.ElementAt((int)midIdx);
 
                 if (string.Equals(city, midLoc.City, StringComparison.Ordinal))

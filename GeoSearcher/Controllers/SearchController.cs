@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using BusinessLogic;
 using BusinessLogic.Models;
+using GeoSearcher.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeoSearcher.Controllers
@@ -21,14 +21,13 @@ namespace GeoSearcher.Controllers
         // ReSharper disable once InconsistentNaming
         public Location IP(string ip)
         {
-            if (!TryParseIP(ip,
-                            out ulong parsedIp))
+            if (!TryParseIP(ip, out ulong parsedIp))
             {
                 HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return null;
             }
 
-            return _geoSearcher.GetLocationByIP(parsedIp);
+            return _geoSearcher.GetLocationByIP(parsedIp)?.ToApiModel();
         }
 
         [HttpGet("/city/locations")]
@@ -37,21 +36,18 @@ namespace GeoSearcher.Controllers
             if (string.IsNullOrEmpty(city))
                 return null;
 
-            return _geoSearcher.GetLocationsByCity(city);
+            return _geoSearcher.GetLocationsByCity(city)?.ToApiModel();
         }
 
-        private bool TryParseIP(string ip,
-                                out ulong parsedIp)
+        private bool TryParseIP(string ip, out ulong parsedIp)
         {
             parsedIp = 0;
-            if (!IPAddress.TryParse(ip,
-                                    out IPAddress ipAddress))
+            if (!IPAddress.TryParse(ip, out IPAddress ipAddress))
             {
                 return false;
             }
 
-            parsedIp = BitConverter.ToUInt32(ipAddress.GetAddressBytes(),
-                                             0);
+            parsedIp = BitConverter.ToUInt32(ipAddress.GetAddressBytes(), 0);
 
             return true;
         }

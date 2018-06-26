@@ -15,7 +15,5 @@
         public uint IpFrom { get; }
         public uint IpTo { get; }
         public uint Index { get; }
-
-        public override string ToString() => $"[{Index}] {IpFrom} - {IpTo}";
     }
 }

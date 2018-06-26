@@ -4,11 +4,11 @@ using BusinessLogic.Models;
 
 #endregion
 
-namespace BusinessLogic.Extensions
+namespace GeoSearcher.Extensions
 {
     internal static class LocationExtensions
     {
-        public static Location ToBusiness(this DataAccess.Models.Location location)
+        public static Location ToApiModel(this BusinessLogic.Models.Location location)
         {
             if (location == null)
             {

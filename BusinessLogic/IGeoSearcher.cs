@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using BusinessLogic.Models;
+﻿using BusinessLogic.Models;
 
 namespace BusinessLogic
 {
